@@ -1,6 +1,9 @@
 # This example requires the 'message_content' intent.
 
 import discord
+import os 
+from dotenv import load_dotenv
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -24,4 +27,4 @@ async def on_message(message):
         await message.channel.send('UwU')
 
  
-client.run('TOKEN')
+client.run(os.getenv("TOKEN"))
