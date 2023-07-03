@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "mittensKittenV2", "mittensKittenV2.pyproj", "{35C053B7-FD80-4254-BFC5-60D177EE0D18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35C053B7-FD80-4254-BFC5-60D177EE0D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C053B7-FD80-4254-BFC5-60D177EE0D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5113114-F81B-47B9-8AB6-FA29C492B8EE}
+	EndGlobalSection
+EndGlobal
