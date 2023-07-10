@@ -1,30 +1,52 @@
 # This example requires the 'message_content' intent.
 
-import discord
+
 import os 
 from dotenv import load_dotenv
 load_dotenv()
-
-intents = discord.Intents.default()
-intents.message_content = True
-
-client = discord.Client(intents=intents)
+import nextcord
 
 
+intents = nextcord.Intents.default().all()
+
+intents.message_content=True
+from nextcord.ext import commands
 
 
-@client.event
+
+AppId=os.getenv("APPID")
+GuildId=986407383611867147
+BotToken=os.getenv("TOKEN")
+CredToken=os.getenv("CREDS")
+
+
+bot = commands.Bot( intents=intents)
+
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}, sup bitches')
+    print(f'We have logged in as {bot.user}, sup bitches')
+    #await message.channel.send('We have logged in as {bot.user}, sup bitches')
 
-@client.event
+
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith('$ping'):
-        await message.channel.send('pong')
-    if message.content.startswith('$nan'):
-        await message.channel.send('UwU')
+    print(f'Message from {message.author}: {message.content}')
+    if message.content.startswith('nani'):
+        channel = message.channel
+        await channel.send('UwU')
+
+
+
+@bot.slash_command(description="ping", guild_ids=[GuildId])
+async def ping(interaction: nextcord.Interaction):
+    await interaction.send("pong")
+
+@bot.slash_command(description="dice roll", guild_ids=[GuildId])
+async def ping(interaction: nextcord.Interaction):
+    await interaction.send("dice")
+
+
+
 
  
-client.run(os.getenv("TOKEN"))
+bot.run(BotToken)
