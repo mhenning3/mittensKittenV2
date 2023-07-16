@@ -32,10 +32,10 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     print(f'Message from {message.author}: {message.content}')
-    if message.content.startswith('nani'.lower()):
+    if message.content.startswith('nani'):
         channel = message.channel
         await channel.send('UwU')
-    if message.content.startswith('test'.lower()):
+    if message.content.startswith('test'):
         channel = message.channel
         await channel.send('ed')
 
@@ -57,6 +57,22 @@ async def dice_roll(interaction: nextcord.Interaction, num:int):
     else:
         return   
 
+@bot.slash_command(name="sarcasm",description="sarcasm")
+async def sarcasm (interaction: nextcord.Interaction, words:str):
+    track=1;
+    newWord=""
+    for x in range(len(words)):
+        if(words[x]==" "):
+            newWord=newWord+" "
+        elif(re.match("[a-zA-Z]",str(words[x]))):
+            if(track%2==0):
+                newWord=newWord+words[x].lower()
+            else:
+                newWord=newWord+words[x].upper()
+            track+=1
+        else:
+            newWord=newWord+words[x]
+    await interaction.response.send_message(f"{newWord}")
 ##Helper functions for pig latin
 ##########################################################################################
 vowels = ["a","e","i","o","u","y"]
