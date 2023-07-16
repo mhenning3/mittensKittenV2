@@ -12,7 +12,8 @@ intents = nextcord.Intents.default().all()
 intents.message_content=True
 from nextcord.ext import commands
 
-
+import re
+import random
 
 AppId=os.getenv("APPID")
 GuildId=986407383611867147
@@ -44,11 +45,20 @@ async def on_message(message):
 async def ping(interaction: nextcord.Interaction):
     await interaction.send("pong")
 
-@bot.slash_command(name="dice_roll",description="dice_roll", guild_ids=[GuildId])
-async def dice_roll(interaction: nextcord.Interaction):
-    await interaction.send("I don't work yet. Sorry")
 
+@bot.slash_command(name="dice_roll",description="dice_roll")
+async def dice_roll(interaction: nextcord.Interaction, num:int):
+    result=0;
+    if(re.match("^\\d+$",str(num))):
+        if(num<2 or num>100):
+            await interaction.response.send_message(f"{num} is out of range. please choose a value between 2 and 100")
+        result=random.randrange(1,num)
+        await interaction.response.send_message(f"Rolling a D{num}\nYou rolled {result}")
+    else:
+        return   
 
+##Helper functions for pig latin
+##########################################################################################
 vowels = ["a","e","i","o","u","y"]
 def vowelChecker(arg):
 
@@ -92,6 +102,6 @@ async def pig_latin(interaction: nextcord.Interaction, word: str):
         else:
             return
     await interaction.response.send_message(f"Original sentence:\t{word}\nPig latin:\t{finalWord}")
-
+#################################################################################################
  
 bot.run(BotToken)
