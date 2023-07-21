@@ -46,16 +46,35 @@ async def ping(interaction: nextcord.Interaction):
     await interaction.send("pong")
 
 
-@bot.slash_command(name="dice_roll",description="dice_roll")
-async def dice_roll(interaction: nextcord.Interaction, num:int):
-    result=0;
-    if(re.match("^\\d+$",str(num))):
-        if(num<2 or num>100):
-            await interaction.response.send_message(f"{num} is out of range. please choose a value between 2 and 100")
-        result=random.randrange(1,num)
-        await interaction.response.send_message(f"Rolling a D{num}\nYou rolled {result}")
+
+###############################
+#Dice helper function
+ 
+@bot.slash_command(name="dice_roll",description="Rolls a specified number of dice", )
+async def dice_roll(interaction: nextcord.Interaction, d: int, amount: int):
+    result=f"Rolling {amount} D{d}\nRolls:\n"
+    nums=0
+    total=0
+    if(amount<1):
+        await interaction.response.send_message("Roll at least 1 die smartass")
+    elif(amount>100):
+        await interaction.response.send_message("This isn't a bag of holding. I can only go up to 100")
     else:
-        return   
+        if(re.match("^\\d+$",str(d))):
+            if(d<2 or d>100):
+                await interaction.response.send_message(f"{d} is out of range. please choose a value between 2 and 100")
+            for x in range(amount):
+                nums=random.randrange(1,d)
+                result=result+f"{nums}\t"
+                total=total+nums
+            result=result+f"\nTotal {total}"
+            await interaction.response.send_message(result)
+            return;
+        else:
+            return  
+
+
+
 
 @bot.slash_command(name="sarcasm",description="sarcasm")
 async def sarcasm (interaction: nextcord.Interaction, words:str):
