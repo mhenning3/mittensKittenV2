@@ -49,34 +49,80 @@ async def ping(interaction: nextcord.Interaction):
 
 ###############################
 #Dice helper function
- 
+def listSplit(nums):
+    listNums=nums.split("+")
+    for x in range(len(listNums)):
+        listNums[x]=listNums[x].strip()
+        listNums[x]=int(listNums[x])
+    return listNums
+
 @bot.slash_command(name="dice_roll",description="Rolls a specified number of dice", )
-async def dice_roll(interaction: nextcord.Interaction, d: int, amount: int):
-    result=f"Rolling {amount} D{d}\nRolls:\n"
+async def dice_roll(interaction: nextcord.Interaction, d: str, amount: str):
+    embedTitle=f"Rolling "
+    result=""
     nums=0
     total=0
-    if(amount<1):
-        await interaction.response.send_message("Roll at least 1 die smartass")
-    elif(amount>100):
-        await interaction.response.send_message("This isn't a bag of holding. I can only go up to 100")
-    else:
-        if(re.match("^\\d+$",str(d))):
-            if(d<2 or d>100):
-                await interaction.response.send_message(f"{d} is out of range. please choose a value between 2 and 100")
-            for x in range(amount):
-                nums=random.randrange(1,d)
-                result=result+f"{nums}\t"
-                total=total+nums
-            result=result+f"\nTotal {total}"
-            await interaction.response.send_message(result)
-            return;
+    numlist=""
+    reject=False
+    triggernumD=0
+
+    if(re.match("[0-9,+]",d) and re.match("[0-9,+]",amount)):
+        d=listSplit(d)
+        amount=listSplit(amount)
+        if(len(d)!=len(amount)):
+            difference=len(d)-len(amount)
+            if(difference>0):
+                await interaction.response.send_message(f"Length mismatch\n{difference} more dice types than amount specified")
+            else:
+                await interaction.response.send_message(f"Length mismatch\n{abs(difference)} more dice specified than dice types")
+            return
         else:
-            return  
+            for x in range(len(d)):
+                if(amount[x]<1):
+                    await interaction.response.send_message("Roll at least 1 die smartass")
+                    return
+                elif(amount[x]>100):
+                    await interaction.response.send_message("This isn't a bag of holding. I can only go up to 100")
+                    return
+                if(d[x]<2 or d[x]>100):
+                    reject=True
+                    triggernumD=x
+                    return
+                for y in range(amount[x]):
+                    nums=random.randrange(1,d[x]+1)
+                    total=total+nums
+                    if y==0:
+                        numlist=numlist+f"\n\tD{d[x]}:\t"
+                    numlist=numlist+f"{nums}\t"
+
+                if(x<len(d)-1 and len(d)>1):
+                    embedTitle=embedTitle+f"{amount[x]} D{d[x]}, "
+                     
+                      
+            embedTitle=embedTitle+f" {amount[len(amount)-1]} D{d[len(d)-1]}" 
+            result=f"\nRolls:{numlist}\n\n***Total {total}***"
+            embed = nextcord.Embed(
+            title=embedTitle,
+            description=f"{result}",
+ 
+            )
+            embed_message = await interaction.response.send_message(embed=embed)
+            embed_message = await embed_message.fetch()
+            #await interaction.response.send_message(result)
+            if reject==True:
+                    await interaction.response.send_message(f"{triggernumD} is out of range. please choose a value between 2 and 100")
+            
+    else:
+        await interaction.response.send_message(f"Not a valid entry")
+        #properly fix later
+        return  
 
 
 
 
-@bot.slash_command(name="sarcasm",description="sarcasm")
+
+
+@bot.slash_command(name="sarcasm",description="ReTuRnS tHiS tExT")
 async def sarcasm (interaction: nextcord.Interaction, words:str):
     track=1;
     newWord=""
