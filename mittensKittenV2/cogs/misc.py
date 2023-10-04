@@ -15,7 +15,7 @@ class misc(commands.Cog):
             bubb=bubb+"\n"
             for x in range(sizex):
                 bubb=bubb+"||o||"    
-        await interaction.response.send_message(f"{bubb}")
+        await interaction.send_message(f"{bubb}")
 
 def setup(bot):
     bot.add_cog(misc(bot))

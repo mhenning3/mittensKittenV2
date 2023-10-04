@@ -38,7 +38,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    print(f'Message from {message.author}: {message.content}')
+    #print(f'Message from {message.author}: {message.content}')
     if message.content.startswith('nani'):
         channel = message.channel
         await channel.send('UwU')
