@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import nextcord
+import random
 
 
 intents = nextcord.Intents.default().all()
@@ -39,12 +40,14 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     #print(f'Message from {message.author}: {message.content}')
-    if message.content.startswith('nani'):
-        channel = message.channel
+    channel = message.channel
+    if message.content.startswith('nani'.lower()):
         await channel.send('UwU')
-    if message.content.startswith('test'):
-        channel = message.channel
+    if message.content.startswith('test'.lower()):
         await channel.send('ed')
+    num=random.randint(1,200)
+    if(num==1):
+        await channel.send('Bitch')
 
 
 #only use lowercase for names
