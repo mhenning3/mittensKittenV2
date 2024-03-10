@@ -47,11 +47,11 @@ with open('insultList.txt', 'r') as file:
 async def on_message(message):
     #print(f'Message from {message.author}: {message.content}')
     channel = message.channel
-    if message.content.startswith('nani'.lower()):
+    if message.content.lower().startswith('nani'):
         await channel.send('UwU')
-    if message.content.startswith('test'.lower()):
+    if message.content.lower().startswith('test'):
         await channel.send('ed')
-    num=random.randint(1,200)
+    num=random.randint(1,100)
     #data['insults'] is the array format
     if(num==1):
         num2=random.randint(0,len(data)-1)
