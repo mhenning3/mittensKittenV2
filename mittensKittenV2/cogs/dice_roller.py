@@ -24,7 +24,6 @@ class dice_roller(commands.Cog):
         nums=0
         total=0
         numlist=""
-        reject=False
         triggernumD=0
 
         if(re.match("[0-9,+]",d) and re.match("[0-9,+]",amount)):
@@ -41,20 +40,21 @@ class dice_roller(commands.Cog):
                 for x in range(len(d)):
                     if(amount[x]<1):
                         await interaction.response.send_message("Roll at least 1 die smartass")
-                        return
+                        break
                     elif(amount[x]>100):
                         await interaction.response.send_message("This isn't a bag of holding. I can only go up to 100")
-                        return
+                        break
                     if(d[x]<2 or d[x]>100):
-                        reject=True
-                        triggernumD=x
-                        return
-                    for y in range(amount[x]):
-                        nums=random.randrange(1,d[x]+1)
-                        total=total+nums
-                        if y==0:
-                            numlist=numlist+f"\n\tD{d[x]}:\t"
-                        numlist=numlist+f"{nums}\t"
+                        triggernumD=d[x]
+                        await interaction.response.send_message(f"{triggernumD} is out of range. please choose a value between 2 and 100")
+                        break
+                    else:
+                        for y in range(amount[x]):
+                            nums=random.randrange(1,d[x]+1)
+                            total=total+nums
+                            if y==0:
+                                numlist=numlist+f"\n\tD{d[x]}:\t"
+                            numlist=numlist+f"{nums}\t"
 
                     if(x<len(d)-1 and len(d)>1):
                         embedTitle=embedTitle+f"{amount[x]} D{d[x]}, "
@@ -70,9 +70,7 @@ class dice_roller(commands.Cog):
                 embed_message = await interaction.response.send_message(embed=embed)
                 embed_message = await embed_message.fetch()
                 #await interaction.response.send_message(result)
-                if reject==True:
-                        await interaction.response.send_message(f"{triggernumD} is out of range. please choose a value between 2 and 100")
-            
+
         else:
             await interaction.response.send_message(f"Not a valid entry")
             #properly fix later
